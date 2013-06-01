@@ -74,5 +74,5 @@ sort -u file_WRB.dat > fsort
 cp fsort file_WRB.dat
 sort -u file_sentstru.dat > fsort
 cp fsort file_sentstru.dat
-sort -u file_-NONE-.dat > fsort
-cp fsort file_-NONE-.dat
+#sort -u file_-NONE-.dat > fsort
+#cp fsort file_-NONE-.dat

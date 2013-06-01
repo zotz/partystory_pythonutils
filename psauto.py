@@ -12,14 +12,23 @@ import nltk.data
 
 datadir="/var/dat1/psauto/data"
 fixsent = ""
+arrDict = {}
+#arrDict = { 'CC': 'mf_CC', 'CD': 'mf_CD', 'DT': 'mf_DT', 'EX': 'mf_EX', 'IN': 'mf_IN', 'JJ': 'mf_JJ', 'JJR': 'mf_JJR', 'JJS': 'mf_JJS', 'LS': 'mf_LS', 'MD': 'mf_MD', 'NN': 'mf_NN', 'NNP': 'mf_NNP', 'NNPS': 'mf_NNPS', 'NNS': 'mf_NNS', 'PDT': 'mf_PDT', 'POS': 'mf_POS', 'PRP': 'mf_PRP', 'PRP$': 'mf_PRP$', 'RB': 'mf_RB', 'RBR': 'mf_RBR', 'RBS': 'mf_RBS', 'RP': 'mf_RP', 'SYM': 'mf_SYM', 'TO': 'mf_TO', 'UH': 'mf_UH', 'VB': 'mf_VB', 'VBD': 'mf_VBD', 'VBG': 'mf_VBG', 'VBN': 'mf_VBN', 'VBP': 'mf_VBP', 'VBZ': 'mf_VBZ', 'WDT': 'mf_WDT', 'WP': 'mf_WP', 'WP$': 'mf_WP$', 'WRB': 'mf_WRB'}
 for mf in ['CC', 'CD', 'DT', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNP', 'NNPS', 'NNS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB']:
-	print "opening file: ", 'file_'+mf
+	arrDict[mf] = 'mf_'+mf
+
+
+for mf in ['CC', 'CD', 'DT', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNP', 'NNPS', 'NNS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB']:
+#for mf in ['CC', 'CD', 'DT', 'EX']:
+	print "opening file: ", 'file_'+mf+'.dat'
 	# I can't get this to work right for me.
 	# hence I open and close repeatedly in the loops further below
-	# file = open('myfile.dat', 'a+')
-	# f = open('%s.csv' % name, 'wb')
-	#locals()[ "f%02d" % i ] = open( "file%02d.txt" % i )
-	# locals()[ "%s/file_%s.dat" % (datadir,mf) ] = open('%s/file_%s.dat' % (datadir, mf), 'a+')
+	arrDict[mf] = open('%s/file_%s.dat' % (datadir, mf), 'a+')
+	# seems to open things
+	#arrDict[mf].write('Processing:  '+mf+"\n")
+
+
+print "===============Do some cool stuff here.===============================\n"
 
 # open sentence structure file
 fsent_stru = open('%s/file_%s.dat' % (datadir, 'sentstru'), 'a+')
@@ -68,28 +77,29 @@ for sentence in sentences:
 		#print "\n======================\n"
 		if stuple[1] == "FW":
 			print "************* Found a Foreigh Word ************************\n"
+			sys.exit()
 			fixsent = fixsent+stuple[0]
-			mfile = open('%s/file_%s.dat' % (datadir, stuple[1]), 'a+')
-			#datadir+"/file_"+str(stuple[1])+".dat".write(str(stuple[1]))
-			mfile.write(stuple[0].lower())
-			mfile.write("\n")
-			mfile.close()
+			arrDict[stuple[1]].write(stuple[0].lower())
+			arrDict[stuple[1]].write("\n")
+		elif stuple[1] in [',','.','?','!',':',';']:
+			# print stuple[1]
+			fixsent = fixsent[0:-1]
+			fixsent = fixsent+stuple[0]
+			fixsent = fixsent+" "
+		elif stuple[1] in ['CC', 'CD', 'DT', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNP', 'NNPS', 'NNS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB']:
+			fixsent = fixsent+"{"+stuple[1]+"}"
+			fixsent = fixsent+" "
+			# write to speech part data files
+			arrDict[stuple[1]].write(stuple[0].lower())
+			arrDict[stuple[1]].write("\n")
 		else:
-			#print stuple[1]
-			if stuple[1] in [',','.','?','!',':',';']:
-				# print stuple[1]
-				fixsent = fixsent[0:-1]
-				fixsent = fixsent+stuple[0]
-				fixsent = fixsent+" "
-			else:
-				#print "not punctuation"
-				fixsent = fixsent+"{"+stuple[1]+"}"
-				fixsent = fixsent+" "
-				# write to speech part data files
-				mfile = open('%s/file_%s.dat' % (datadir, stuple[1]), 'a+')
-				mfile.write(stuple[0].lower())
-				mfile.write("\n")
-				mfile.close()
+			#print "not punctuation"
+			#fixsent = fixsent+"{"+stuple[1]+"}"
+			#print "=============----------- " + stuple[1] + "--------------======================================"
+			#print "=============----------- " + stuple[0] + "--------------======================================"
+			fixsent = fixsent+stuple[0]
+			fixsent = fixsent+" "
+
 	fixsent = fixsent[0:-1]
 	fixsent += '\n'
 	# write to sentence structure file	
@@ -99,11 +109,12 @@ for sentence in sentences:
 	# clear fixsent
 	fixsent = ""
 
+	
+for mf in ['CC', 'CD', 'DT', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNP', 'NNPS', 'NNS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB']:
+	arrDict[mf].close()
+	print "closing file: ", 'file_'+mf+'.dat'
+
 
 rfile.close()
 fsent_stru.close()
 ftagged.close()
-
-# Now sort data files and eliminate duplicates
-# call(["ls", "-l"])
-call(["/var/dat1/psauto/pssortem.sh"])
