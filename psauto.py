@@ -20,7 +20,7 @@ for mf in ['CC', 'CD', 'DT', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', '
 
 for mf in ['CC', 'CD', 'DT', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNP', 'NNPS', 'NNS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB']:
 #for mf in ['CC', 'CD', 'DT', 'EX']:
-	print "opening file: ", 'file_'+mf+'.dat'
+	#print "opening file: ", 'file_'+mf+'.dat'
 	# I can't get this to work right for me.
 	# hence I open and close repeatedly in the loops further below
 	arrDict[mf] = open('%s/file_%s.dat' % (datadir, mf), 'a+')
@@ -55,6 +55,16 @@ print
 
 # this is how we handle each sentence:
 # pos_tag(word_tokenize("John's big idea isn't all that bad.")) 
+print "######################################################################################"
+print "Working on this sentence: "
+print "This is cool, at lest I think so. (What about you?) Or you?"
+print ""
+print pos_tag(word_tokenize("This is cool, at lest I think so. (What about you?) Or you?"))
+print ""
+print "This shows a problem with handling opening and closing brackets here. Help and feedback please."
+print "The opening parenthesis gets tagged 'NNP' and the closing parenthesis is tagged ':' -"
+print "I don't know why. Am I doing something wrong."
+print "######################################################################################"
 
 rfile = open(filename)
 data = rfile.read()
@@ -112,7 +122,7 @@ for sentence in sentences:
 	
 for mf in ['CC', 'CD', 'DT', 'EX', 'IN', 'JJ', 'JJR', 'JJS', 'LS', 'MD', 'NN', 'NNP', 'NNPS', 'NNS', 'PDT', 'POS', 'PRP', 'PRP$', 'RB', 'RBR', 'RBS', 'RP', 'SYM', 'TO', 'UH', 'VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ', 'WDT', 'WP', 'WP$', 'WRB']:
 	arrDict[mf].close()
-	print "closing file: ", 'file_'+mf+'.dat'
+	#print "closing file: ", 'file_'+mf+'.dat'
 
 
 rfile.close()
