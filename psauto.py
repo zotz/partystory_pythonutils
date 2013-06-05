@@ -91,8 +91,10 @@ for sentence in sentences:
 			fixsent = fixsent+stuple[0]
 			arrDict[stuple[1]].write(stuple[0].lower())
 			arrDict[stuple[1]].write("\n")
-		elif stuple[1] in [',','.','?','!',':',';']:
+		elif stuple[1] in ['$','`','"','(',')',',','-','.',':']:
 			# print stuple[1]
+			print stuple
+			print stuple[0]+"  --=--  "+stuple[1]
 			fixsent = fixsent[0:-1]
 			fixsent = fixsent+stuple[0]
 			fixsent = fixsent+" "
@@ -100,8 +102,12 @@ for sentence in sentences:
 			fixsent = fixsent+"{"+stuple[1]+"}"
 			fixsent = fixsent+" "
 			# write to speech part data files
-			arrDict[stuple[1]].write(stuple[0].lower())
-			arrDict[stuple[1]].write("\n")
+			if stuple[1] in ['NNP','NNPS']:
+				 arrDict[stuple[1]].write(stuple[0])
+				 arrDict[stuple[1]].write("\n")
+			else:
+				arrDict[stuple[1]].write(stuple[0].lower())
+				arrDict[stuple[1]].write("\n")
 		else:
 			#print "not punctuation"
 			#fixsent = fixsent+"{"+stuple[1]+"}"
